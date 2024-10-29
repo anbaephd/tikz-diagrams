@@ -1,0 +1,50 @@
+name: Generate PDF - Different TikZ Diagrams
+
+permissions:
+  contents: write
+
+on:
+  push:
+    paths:
+      - '*'
+      - '.github/workflows/generate-pdf.yml'
+    branches: ["main"]
+    tags: ["v*"]
+  pull_request:
+    branches: ["main"]
+
+env:
+  DOCUMENT_NAME: Different TikZ Diagrams
+  TEX_MAIN_FILE: main.tex
+  FILE_NAME: main.pdf
+
+jobs:
+  convert_via_pandoc:
+    name: Generate PDF with LaTeX
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set NEW_FILE_NAME
+        run: echo "NEW_FILE_NAME=$(sed -e 's/\//_/g' <<< 'main-${{ github.ref_name }}.pdf')" >> $GITHUB_ENV
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Compile LaTeX to PDF
+        uses: xu-cheng/latex-action@v3
+        with:
+          root_file: ${{ env.TEX_MAIN_FILE }}
+          work_in_root_file_dir: true
+          texlive_version: 2023
+          # extra_fonts: ./fonts/*.otf
+          latexmk_shell_escape: true
+      - name: Rename ${{ env.FILE_NAME }} to ${{ env.NEW_FILE_NAME }}
+        run: mv ${{ env.FILE_NAME }} ${{ env.NEW_FILE_NAME }}
+      - name: Upload ${{ env.NEW_FILE_NAME }} as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.DOCUMENT_NAME }} - PDF
+          path: ${{ env.NEW_FILE_NAME }}
+      - name: Create ${{ env.DOCUMENT_NAME }} Release if semver tagged
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: ${{ env.NEW_FILE_NAME }}
+          token: ${{ secrets.GITHUB_TOKEN }}
