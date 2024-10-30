@@ -1,0 +1,29 @@
+\section{Flow diagram}
+
+\begin{figure}[th!]
+\centering
+\begin{tikzpicture}[node distance=2cm]
+
+\node (start) [flowstartstop] {Start};
+\node (in1) [flowio, below of=start] {Input};
+\node (pro1) [flowprocess, below of=in1] {Process 1};
+\node (dec1) [flowdecision, below of=pro1, yshift=-0.5cm] {Decision 1};
+
+\node (pro2a) [flowprocess, below of=dec1, yshift=-0.5cm] {Process 2a};
+
+\node (pro2b) [flowprocess, right of=dec1, xshift=2cm] {Process 2b};
+\node (out1) [flowio, below of=pro2a] {Output};
+\node (stop) [flowstartstop, below of=out1] {Stop};
+
+\draw [flowarrow] (start) -- (in1);
+\draw [flowarrow] (in1) -- (pro1);
+\draw [flowarrow] (pro1) -- (dec1);
+\draw [flowarrow] (dec1) -- node[anchor=east] {yes} (pro2a);
+\draw [flowarrow] (dec1) -- node[anchor=south] {no} (pro2b);
+\draw [flowarrow] (pro2b) |- (pro1);
+\draw [flowarrow] (pro2a) -- (out1);
+\draw [flowarrow] (out1) -- (stop);
+
+\end{tikzpicture}
+\caption{bla bla bla}
+\end{figure}
