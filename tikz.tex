@@ -32,3 +32,61 @@ draw=black,
 fill=green!30]
 \tikzstyle{flowarrow} = [thick,->,>=stealth]
 
+
+\makeatletter
+\tikzset{
+    database segment style/.style={draw},
+    database/.style={
+        path picture={            
+        \path [database segment style]
+                (-\db@r,\db@sh/2) 
+                -- ++(0,-1*\db@sh) 
+                arc [start angle=180, end angle=360,
+                    x radius=\db@r, y radius=\db@ar*\db@r]
+                -- ++(0,1*\db@sh)
+                arc [start angle=360, end angle=180,
+                    x radius=\db@r, y radius=\db@ar*\db@r];
+            \path [database segment style]
+                (0, \db@sh/2) circle [x radius=\db@r, y radius=\db@ar*\db@r];
+			\path [database segment style]
+                (-\db@r,\db@sh/4) 
+                arc [start angle=180, end angle=360,
+                    x radius=\db@r, y radius=\db@ar*\db@r];
+        },
+        minimum width=2*\db@r + \pgflinewidth,
+        minimum height=1*\db@sh + 2*\db@ar*\db@r + \pgflinewidth,
+    },
+    database segment height/.store in=\db@sh,
+    database radius/.store in=\db@r,
+    database aspect ratio/.store in=\db@ar,
+    database segment height=3cm,
+    database radius=1cm,
+    database aspect ratio=0.2,
+    database segment/.style={
+        database segment style/.append style={#1}},
+        %%
+    queue segment style/.style={draw},
+    queue/.style={
+        path picture={            
+        \path [queue segment style]
+                (\db@sh/2,\db@r) 
+                -- ++(-1*\db@sh, 0)
+                arc [start angle=90, end angle=270,
+                    y radius=\db@r, x radius=\db@ar*\db@r]
+                -- ++(\db@sh,0)
+                circle [yshift=\db@r,y radius=\db@r, x radius=\db@ar*\db@r];
+        },
+        minimum width=1.1*\db@sh + \pgflinewidth,
+        minimum height=2*\db@r + 2*\db@ar*\db@r + \pgflinewidth,
+    },
+    queue segment len/.store in=\db@sh,
+    queue radius/.store in=\db@r,
+    queue aspect ratio/.store in=\db@ar,
+    queue segment len=3cm,
+    queue radius=1cm,
+    queue aspect ratio=0.2,
+    queue segment/.style={
+        queue segment style/.append style={#1}},
+}
+
+\makeatother

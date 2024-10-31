@@ -1,0 +1,52 @@
+\section{Conponents}
+
+\begin{figure}
+\centering
+
+
+\begin{tikzpicture}[]
+
+%\node[database,label=below:database,database radius=1cm, database segment height=2cm, database aspect ratio=0.2] at (0,0) {};
+\node[queue,label=below:Kafka,queue radius=0.5cm, queue segment len=15cm, name=kafka] at (0,0) {};
+%\begin{umlpackage}[x=0,y=-6]{sp2}
+%    \umlinterface{C}{
+%%      n : uint \\ s : string
+%    }{}
+%    \end{umlpackage}
+%\begin{umlstate}[name=Bgraph, fill=red!20]{<<service>>}
+\umlbasicstate[x=-7,y=2, text width=2cm, name=serviceingestion]{
+	\begin{tabular}{c}
+    <<service>>\\ 
+    \textbf{Ingestion}
+\end{tabular}};
+
+\umlbasicstate[x=-3.5,y=2, text width=2cm,name=servicetagorch]{
+	\begin{tabular}{c}
+    <<service>>\\ 
+    \textbf{Tag}\\
+    \textbf{Orchestrator}
+\end{tabular}};
+
+\umlbasicstate[x=0,y=2, text width=2cm,name=serviceprocessing]{
+	\begin{tabular}{c}
+    <<service>>\\ 
+    \textbf{Processing}
+\end{tabular}};
+
+\umlbasicstate[x=3.5,y=2, text width=2cm,name=servicearchiver]{
+	\begin{tabular}{c}
+    <<service>>\\ 
+    \textbf{Archiver}
+\end{tabular}};
+
+\umlbasicstate[x=7,y=2, text width=2cm,name=servicetransiver]{
+	\begin{tabular}{c}
+    <<service>>\\ 
+    \textbf{Transciver}
+\end{tabular}};
+%\end{umlstate}
+
+\path[->](kafka)--(servicetransiver);
+\end{tikzpicture}
+\caption{bla bla}
+\end{figure}
