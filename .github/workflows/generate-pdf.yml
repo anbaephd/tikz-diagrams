@@ -26,9 +26,9 @@ jobs:
       - name: Set NEW_FILE_NAME
         run: echo "NEW_FILE_NAME=$(sed -e 's/\//_/g' <<< 'main-${{ github.ref_name }}.pdf')" >> $GITHUB_ENV
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Compile LaTeX to PDF
-        uses: xu-cheng/latex-action@v3
+        uses: xu-cheng/latex-action@v4
         with:
           root_file: ${{ env.TEX_MAIN_FILE }}
           work_in_root_file_dir: true
@@ -38,7 +38,7 @@ jobs:
       - name: Rename ${{ env.FILE_NAME }} to ${{ env.NEW_FILE_NAME }}
         run: mv ${{ env.FILE_NAME }} ${{ env.NEW_FILE_NAME }}
       - name: Upload ${{ env.NEW_FILE_NAME }} as artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ${{ env.DOCUMENT_NAME }} - PDF
           path: ${{ env.NEW_FILE_NAME }}
